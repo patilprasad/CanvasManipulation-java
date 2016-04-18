@@ -20,8 +20,8 @@ public class LineChart_AWT extends JFrame
    public LineChart_AWT( String applicationTitle , String chartTitle )		// creates the frame for graph and labels x & y axis
    {
       super(applicationTitle);
-      setSize(800,600);
-      JFreeChart lineChart = ChartFactory.createLineChart(
+      setSize(1000,1000);
+      JFreeChart barChart = ChartFactory.createBarChart(
          chartTitle,
          "Years","Number of Schools",
          createDataset(),
@@ -29,11 +29,11 @@ public class LineChart_AWT extends JFrame
          true,true,false);
       
       Container c = getContentPane();    
-      JPanel p = new ChartPanel( lineChart );
+      JPanel p = new ChartPanel( barChart );
       p.setBackground(Color.BLUE);
-  	  p.setLayout(new GridLayout(3,3));
+  	  //p.setLayout(new GridLayout(3,3));
   	  JButton b = new JButton("LineChart");
-  	  p.add(b,BorderLayout.EAST);
+  	  c.add(b, BorderLayout.WEST);
   	  c.add(p, BorderLayout.CENTER);
   	  setVisible(true);
   	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,8 +58,8 @@ public class LineChart_AWT extends JFrame
       "School Vs Years" ,
       "Numer of Schools vs years");
 
-      chart.pack( );
-      RefineryUtilities.centerFrameOnScreen( chart );
-      chart.setVisible( true );
+      //chart.pack( );
+     // RefineryUtilities.centerFrameOnScreen( chart );
+      //chart.setVisible( true );
    }
 }
