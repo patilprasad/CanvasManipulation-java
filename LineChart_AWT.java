@@ -23,18 +23,26 @@ public class LineChart_AWT extends JFrame
       setSize(1000,1000);
       JFreeChart barChart = ChartFactory.createBarChart(
          chartTitle,
-         "Years","Number of Schools",
+         "Students","Grades",
          createDataset(),
          PlotOrientation.VERTICAL,
          true,true,false);
+      JFreeChart lineChart = ChartFactory.createLineChart(
+    	         chartTitle,
+    	         "Years","Number of Schools",
+    	         createDataset(),
+    	         PlotOrientation.VERTICAL,
+    	         true,true,false);
       
       Container c = getContentPane();    
       JPanel p = new ChartPanel( barChart );
       p.setBackground(Color.BLUE);
-  	  //p.setLayout(new GridLayout(3,3));
+  	  p.setLayout(new GridLayout(3,3));
   	  JButton b = new JButton("LineChart");
   	  c.add(b, BorderLayout.WEST);
-  	  c.add(p, BorderLayout.CENTER);
+  	  c.add(p, BorderLayout.EAST);
+  	  p = new ChartPanel( lineChart );
+  	  c.add(p, BorderLayout.NORTH);
   	  setVisible(true);
   	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       //chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
@@ -55,8 +63,8 @@ public class LineChart_AWT extends JFrame
    public static void main( String[ ] args ) 
    {
       LineChart_AWT chart = new LineChart_AWT(
-      "School Vs Years" ,
-      "Numer of Schools vs years");
+      "Grade Vs Students" ,
+      "Grades Vs Stdents");
 
       //chart.pack( );
      // RefineryUtilities.centerFrameOnScreen( chart );
