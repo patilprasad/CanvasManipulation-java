@@ -4,29 +4,41 @@
 
 package canvas;
 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.ui.ApplicationFrame;
+//import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class LineChart_AWT extends ApplicationFrame  implements Graph		
+public class LineChart_AWT extends JFrame 		
 {
    public LineChart_AWT( String applicationTitle , String chartTitle )		// creates the frame for graph and labels x & y axis
    {
       super(applicationTitle);
+      setSize(800,600);
       JFreeChart lineChart = ChartFactory.createLineChart(
          chartTitle,
          "Years","Number of Schools",
          createDataset(),
          PlotOrientation.VERTICAL,
          true,true,false);
-         
-      ChartPanel chartPanel = new ChartPanel( lineChart );
-      chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
-      setContentPane( chartPanel );
+      
+      Container c = getContentPane();    
+      JPanel p = new ChartPanel( lineChart );
+      p.setBackground(Color.BLUE);
+  	  p.setLayout(new GridLayout(3,3));
+  	  JButton b = new JButton("LineChart");
+  	  p.add(b,BorderLayout.EAST);
+  	  c.add(p, BorderLayout.CENTER);
+  	  setVisible(true);
+  	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      //chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+      //setContentPane( chartPanel );
    }
 
    private DefaultCategoryDataset createDataset( )
