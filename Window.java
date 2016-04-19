@@ -24,7 +24,7 @@ import javax.imageio.ImageIO;
 public class Window extends JFrame {
 	public Window(String applicationTitle , String chartTitle){					// this method creates the window for the canvas adding 3 buttons for now for accessing graphs
 		super("Canvas by Vaibhav");
-	setSize(800,600);
+	setSize(1200,1000);
 	JFreeChart barChart = ChartFactory.createBarChart(
 	         chartTitle,
 	         "Students","Grades",
@@ -40,16 +40,19 @@ public class Window extends JFrame {
 	 
 	Container c = getContentPane();
 	JPanel p = new JPanel();
+	c.setLayout(new GridLayout(2,2));
 	//-----------adding logo------------------
-		ImageIcon pic = new ImageIcon("src/Steves.jpg");
-	    p.add(new JLabel(pic));
-	    c.add(p,BorderLayout.NORTH );
-	    this.pack();
+		ImageIcon pic = new ImageIcon("src/S.gif");
+		ImageIcon pic2 = new ImageIcon("src/Steves.jpg");
+	    c.add(new JLabel(pic),BorderLayout.NORTH );
+	    c.add(new JLabel(pic2),BorderLayout.NORTH );
+	    //this.pack();
 		
 		
 		//-----------------------------------------
+		 
 	p.setBackground(Color.BLUE);
-	p.setLayout(new GridLayout(2,1));
+	p.setLayout(new GridLayout(4,4));
 	
 	
 	/*
@@ -85,9 +88,11 @@ public class Window extends JFrame {
 			
 		}
 	});
-	/*b = new JButton("PieChart");
-	p.add(b);
-	b.addActionListener(new ActionListener() {
+	
+	for (int i=1;i<=14;i++){
+	b = new JButton("     ");
+	p.add(b);}
+	/*b.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		
 		
