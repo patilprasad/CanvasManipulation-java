@@ -13,6 +13,14 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 public class Window extends JFrame {
 	public Window(String applicationTitle , String chartTitle){					// this method creates the window for the canvas adding 3 buttons for now for accessing graphs
@@ -29,11 +37,23 @@ public class Window extends JFrame {
 	    	  "Years","Number of Schools",
 	    	  createDataset(),
 	    	  PlotOrientation.VERTICAL,
-	    	  true,true,false);
+	    	  true,true,false);	
+	 
 	Container c = getContentPane();
 	JPanel p = new JPanel();
 	p.setBackground(Color.BLUE);
 	p.setLayout(new GridLayout(2,1));
+	
+	try{
+		BufferedImage myPicture = ImageIO.read(new File("Steves.jpg"));
+		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+		
+		//JLabel imgLabel = new JLabel(new ImageIcon("src/Steves.jpg"));
+		//p.add(imgLabel,BorderLayout.NORTH);
+		p.add(picLabel,BorderLayout.NORTH);
+	} catch (IOException ex) {
+        // handle exception...
+   }
 	
 	JButton b = new JButton("LineChart");
 	p.add(b);
