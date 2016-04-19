@@ -15,7 +15,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 public class Window extends JFrame {
 	public Window(String applicationTitle , String chartTitle){
 		super("Canvas by Vaibhav");
-	setSize(1200,1000);
+	setSize(1800,1000);
 	
 	JFreeChart barChart = ChartFactory.createBarChart(
 	         chartTitle,
@@ -32,6 +32,7 @@ public class Window extends JFrame {
 	 
 	Container c = getContentPane();
 	JPanel p = new JPanel();
+	JPanel p3 = new JPanel();
 	JPanel p1 = new ChartPanel( lineChart );
 	JPanel p2 = new ChartPanel( barChart );
 	c.setLayout(new GridLayout(2,2));
@@ -43,7 +44,7 @@ public class Window extends JFrame {
 	//-----------------------------------------
 		 
 	p.setBackground(Color.BLUE);
-	p.setLayout(new GridLayout(4,4));
+	p.setLayout(new GridLayout(4,3));
 
 	
 	JButton b = new JButton("LineChart");
@@ -68,7 +69,31 @@ public class Window extends JFrame {
 		}
 	});
 	
-	for (int i=1;i<=14;i++)
+	b = new JButton("Both");
+	p.add(b);
+	b.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			c.remove(p1);
+			c.remove(p2);
+			c.revalidate();
+			c.repaint();
+			c.add(p1, BorderLayout.CENTER);
+			c.add(p2, BorderLayout.CENTER);
+		}
+	});
+	
+	b = new JButton("Logout");
+	p.add(b);
+	b.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			c.removeAll();
+			c.revalidate();
+			c.add(p3);
+		    c.add(new JLabel(pic2),BorderLayout.CENTER );
+		}
+	});
+	
+	for (int i=1;i<=8;i++)
 	{
 	b = new JButton("     ");
 	p.add(b);
