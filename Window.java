@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 public class Window extends JFrame {
 	public Window(String applicationTitle , String chartTitle){					// this method creates the window for the canvas adding 3 buttons for now for accessing graphs
@@ -41,9 +40,19 @@ public class Window extends JFrame {
 	 
 	Container c = getContentPane();
 	JPanel p = new JPanel();
+	//-----------adding logo------------------
+		ImageIcon pic = new ImageIcon("src/Steves.jpg");
+	    p.add(new JLabel(pic));
+	    c.add(p,BorderLayout.NORTH );
+	    this.pack();
+		
+		
+		//-----------------------------------------
 	p.setBackground(Color.BLUE);
 	p.setLayout(new GridLayout(2,1));
 	
+	
+	/*
 	try{
 		BufferedImage myPicture = ImageIO.read(new File("Steves.jpg"));
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
@@ -54,6 +63,9 @@ public class Window extends JFrame {
 	} catch (IOException ex) {
         // handle exception...
    }
+   */
+	
+	
 	
 	JButton b = new JButton("LineChart");
 	p.add(b);
