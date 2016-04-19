@@ -88,8 +88,8 @@ public class Window extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			c.removeAll();
 			c.revalidate();
-			c.add(p3);
 		    c.add(new JLabel(pic2),BorderLayout.CENTER );
+		    c.add(p3);
 		}
 	});
 	
