@@ -51,7 +51,10 @@ public class Window extends JFrame {
 	b.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			c.remove(p2);
+			c.revalidate();
+			c.repaint();
 			c.add(p1, BorderLayout.CENTER);
+			
 		}
 	});
 	b = new JButton("BarChart");
@@ -59,14 +62,17 @@ public class Window extends JFrame {
 	b.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			c.remove(p1);
+			c.revalidate();
+			c.repaint();
 			c.add(p2, BorderLayout.CENTER);
 		}
 	});
 	
-	for (int i=1;i<=14;i++){
+	for (int i=1;i<=14;i++)
+	{
 	b = new JButton("     ");
-	p.add(b);}
-
+	p.add(b);
+	}
 	c.add(p, BorderLayout.WEST);
 	setVisible(true);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,9 +84,7 @@ public class Window extends JFrame {
 	      dataset.addValue( 15 , "schools" , "1970" );
 	      dataset.addValue( 30 , "schools" , "1980" );
 	      dataset.addValue( 60 , "schools" ,  "1990" );
-	      dataset.addValue( 120 , "schools" , "2000" );
-	      dataset.addValue( 240 , "schools" , "2010" );
-	      dataset.addValue( 300 , "schools" , "2014" );
+	      dataset.addValue( 100 , "schools" , "2000" );
 	      return dataset;
 	   }
 public static void main(String[] a) {
