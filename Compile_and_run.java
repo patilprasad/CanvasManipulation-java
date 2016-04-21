@@ -3,7 +3,7 @@ Author: Rohit Kulkarni
 Description: A java program that compiles and runs another java program.
 */
 
-package rohit;
+/*package rohit;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,5 +48,46 @@ public class Compile_and_Run
 
 	}
 
-}
+}*/
 
+/*******************************************************BETTER CODE*******************************************
+*/
+
+import java.io.*;
+
+public class test 
+{
+	private static void runProcess(String command) throws Exception 
+	{
+	    Process pro = Runtime.getRuntime().exec(command);
+	    printLines(command + " Output:", pro.getInputStream());
+	    printLines(command + " Error:", pro.getErrorStream());
+	    pro.waitFor();
+	    //System.out.println(command + " exitValue() " + pro.exitValue());
+	}
+	
+	private static void printLines(String name, InputStream ins) throws Exception 
+	{
+	    String line = null;
+	    BufferedReader in = new BufferedReader(
+	        new InputStreamReader(ins));
+	    while ((line = in.readLine()) != null) 
+	    {
+	        System.out.println(name + " " + line);
+	    }
+	}
+	
+	public static void main(String[] args)
+	{
+		try 
+		{
+	      runProcess("javac hw_Complex.java");
+	      runProcess("java hw_Complex");
+		} 
+	catch (Exception e) 
+		{
+	      e.printStackTrace();
+		}
+	}
+	
+}
