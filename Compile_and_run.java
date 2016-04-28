@@ -57,6 +57,24 @@ import java.io.*;
 
 public class test 
 {
+	// copy all files from the folder containing .java files
+	// to current directory, for the ease of execution
+
+	public static void File_Copy()
+	{
+		File source = new File("/home/rohit/java_proj/testfolder/testtest");
+		File dest = new File("/home/rohit/java_proj");
+	
+		try 
+		{
+	    	FileUtils.copyDirectory(source, dest);
+		} 
+		catch (IOException e) 
+		{
+	    	e.printStackTrace();
+		}
+	}
+	
 	private static void runProcess(String command) throws Exception 
 	{
 	    Process pro = Runtime.getRuntime().exec(command);
