@@ -128,16 +128,52 @@ public class test
 		File_Copy();
 		for(int i = 0; i < file_names.length; i++)
 		{
-			
-			try 
-			{	
-				
-				runProcess("javac " + file_names[i]);
-				runProcess("java " + file_names[i].substring(0, file_names[i].length() - 5));
-			} 
-			catch (Exception e) 
+			if(file_names[i].endsWith(".java"))
 			{
-	      e.printStackTrace();
+				System.out.println("JAVA CODE OUTPUT");
+			
+				try 
+				{	
+				
+					runProcess("javac " + file_names[i]);
+					runProcess("java " + file_names[i].substring(0, file_names[i].length() - 5));
+				} 
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			else if(file_names[i].endsWith(".cc"))
+			{
+				System.out.println(".cc CODE OUTPUT");
+			
+				try 
+				{	
+				
+					runProcess("g++ " + file_names[i] + " -o " + file_names[i].substring(0, file_names[i].length() - 3));
+					runProcess("./" + file_names[i].substring(0, file_names[i].length() - 3));
+				} 
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			else if(file_names[i].endsWith(".cpp"))
+			{
+				System.out.println(".cpp CODE OUTPUT");
+			
+				try 
+				{	
+				
+					runProcess("g++ " + file_names[i] + " -o " + file_names[i].substring(0, file_names[i].length() - 4));
+					runProcess("./" + file_names[i].substring(0, file_names[i].length() - 4));
+				} 
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
 			}
 			
 		}
