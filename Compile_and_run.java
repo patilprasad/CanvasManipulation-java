@@ -54,12 +54,39 @@ public class Compile_and_Run
 */
 
 import java.io.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class test 
 {
 	// copy all files from the folder containing .java files
 	// to current directory, for the ease of execution
-
+	static JTextArea display;
+	public test()
+	{
+		super("Test");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    display = new JTextArea();
+		JPanel p = new JPanel();
+		Container c = getContentPane();
+		p.add(display);
+		setSize(800,500);
+		display.setPreferredSize(new Dimension(800, 500));
+		//display.setText("test \n hello");
+		c.add(BorderLayout.CENTER, p);
+		setVisible(true);
+		
+		try 
+		{	
+	      runProcess("javac hw_Complex.java");
+	      runProcess("java hw_Complex");
+		} 
+	catch (Exception e) 
+		{
+	      e.printStackTrace();
+		}
+		
+	}
 	public static void File_Copy()
 	{
 		File source = new File("/home/rohit/java_proj/testfolder/testtest");
@@ -97,7 +124,7 @@ public class test
 	
 	public static void main(String[] args)
 	{
-		try 
+	/*	try 
 		{
 	      runProcess("javac hw_Complex.java");
 	      runProcess("java hw_Complex");
@@ -105,7 +132,8 @@ public class test
 	catch (Exception e) 
 		{
 	      e.printStackTrace();
-		}
+		}*/
+		new test();
 	}
 	
 }
