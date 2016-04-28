@@ -124,16 +124,31 @@ public class test
 	
 	public static void main(String[] args)
 	{
-	/*	try 
+		filenames();
+		File_Copy();
+		for(int i = 0; i < file_names.length; i++)
 		{
-	      runProcess("javac hw_Complex.java");
-	      runProcess("java hw_Complex");
-		} 
-	catch (Exception e) 
-		{
+			
+			try 
+			{	
+				
+				runProcess("javac " + file_names[i]);
+				runProcess("java " + file_names[i].substring(0, file_names[i].length() - 5));
+			} 
+			catch (Exception e) 
+			{
 	      e.printStackTrace();
-		}*/
-		new test();
+			}
+			
+		}
+		
+		//new test();
+		
+		
+
+		
+
+
 	}
 	
 }
