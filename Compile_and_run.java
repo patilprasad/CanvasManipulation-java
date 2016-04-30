@@ -128,10 +128,10 @@ public class test extends JFrame
 						{
 							e1.printStackTrace();
 						}
-						File f = new File(file_names[i1]);
+						/*File f = new File(file_names[i1]);
 						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 5) + ".class");
 						f.delete();
-						f1.delete();
+						f1.delete();*/
 					}
 					
 					else if(file_names[i1].endsWith(".cc"))
@@ -148,10 +148,10 @@ public class test extends JFrame
 						{
 							e1.printStackTrace();
 						}
-						File f = new File(file_names[i1]);
+						/*File f = new File(file_names[i1]);
 						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 3));
 						f.delete();
-						f1.delete();
+						f1.delete();*/
 					}
 					
 					else if(file_names[i1].endsWith(".cpp"))
@@ -168,10 +168,10 @@ public class test extends JFrame
 						{
 							e1.printStackTrace();
 						}
-						File f = new File(file_names[i1]);
+						/*File f = new File(file_names[i1]);
 						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 4));
 						f.delete();
-						f1.delete();
+						f1.delete();*/
 					}
 					
 				}
@@ -180,6 +180,40 @@ public class test extends JFrame
 			});
 		}
 		p.add(display, BorderLayout.CENTER);
+		JButton exit = new JButton("Exit");
+		p.add(exit, BorderLayout.SOUTH);
+		exit.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				for(int i = 0; i < file_names.length; i++)
+				{
+					if(file_names[i].endsWith(".java"))
+					{
+						File f = new File(file_names[i]);
+						File f1 = new File(file_names[i].substring(0, file_names[i].length() - 5) + ".class");
+						f.delete();
+						f1.delete();
+					}
+					else if(file_names[i].endsWith(".cc"))
+					{
+						File f = new File(file_names[i]);
+						File f1 = new File(file_names[i].substring(0, file_names[i].length() - 3));
+						f.delete();
+						f1.delete();
+					}
+					else if(file_names[i].endsWith(".cpp"))
+					{
+						File f = new File(file_names[i]);
+						File f1 = new File(file_names[i].substring(0, file_names[i].length() - 4));
+						f.delete();
+						f1.delete();
+					}
+				}
+			System.exit(0);
+			}
+			
+		});
 		
 		
 		setSize(800,500);
