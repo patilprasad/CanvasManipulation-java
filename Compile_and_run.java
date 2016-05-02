@@ -1,58 +1,3 @@
-/*
-Author: Rohit Kulkarni
-Description: A java program that compiles and runs another java program.
-*/
-
-/*package rohit;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Arrays;
-
-import javax.tools.JavaCompiler;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
-
-
-public class Compile_and_Run 
-{
-	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
-	{
-		JavaCompiler jc = ToolProvider.getSystemJavaCompiler();
-		StandardJavaFileManager sjfm = jc.getStandardFileManager(null, null, null);
-		
-		
-		File javaFile = new File("/home/rohit/workspace/Compile_Runtime/src/Compile_This_Code.java");
-		Iterable fileObjects = sjfm.getJavaFileObjects(javaFile);
-		String[] options = new String[]{"-d", "/home/rohit/workspace/Compile_Runtime/bin"}; 
-		
-		
-		jc.getTask(null, null, null, Arrays.asList(options), null, fileObjects).call(); 
-		sjfm.close();
-		System.out.println("Class has been successfully compiled");
-		
-		
-		URL[] urls = new URL[]{ new URL("file:///home/rohit/workspace/Compile_Runtime/bin/") }; 
-		URLClassLoader ucl = new URLClassLoader(urls);
-		Class clazz = ucl.loadClass("rohit.Compile_This_Code");
-		System.out.println("Class has been successfully loaded");
-		
-		Method method = clazz.getDeclaredMethod("call_this_method", null);
-		
-		Object object = clazz.newInstance();
-		method.invoke(object, null);
-
-	}
-
-}*/
-
-/*******************************************************BETTER CODE*******************************************
-*/
-
 import java.io.*;
 import javax.swing.*;
 
@@ -96,7 +41,9 @@ public class test extends JFrame
 		}
 	}
 	static JTextArea display;
-	static JButton b;
+	static JList<String> list;
+	static DefaultListModel<String> model;
+	//static JButton b;
 	public test()
 	{
 		super("Test");
@@ -105,11 +52,72 @@ public class test extends JFrame
 	    
 		JPanel p = new JPanel();
 		Container c = getContentPane();
+		model = new DefaultListModel<String>();
 		for(int i = 0; i < file_names.length; i++)
 		{
 			final int i1 = i;
-			b = new JButton(file_names[i]);
-			p.add(b, BorderLayout.EAST);
+			//b = new JButton(file_names[i]);
+			model.addElement(file_names[i]);
+		}
+		list = new JList<String>(model);
+		JScrollPane pane = new JScrollPane(list);
+		c.add(pane, BorderLayout.EAST);
+		MouseListener mouseListener = new MouseAdapter() 
+		{
+		    public void mouseClicked(MouseEvent e) 
+		    {
+		    	String selectedItem = (String)list.getSelectedValue();
+		    	if(selectedItem.endsWith(".java"))
+				{
+					display.setText("");
+					try 
+					{	
+					
+						runProcess("javac " + selectedItem);
+						runProcess("java " + selectedItem.substring(0, selectedItem.length() - 5));
+					} 
+					catch (Exception e1) 
+					{
+						e1.printStackTrace();
+					}
+				}
+		    	
+		    	else if(selectedItem.endsWith(".cc"))
+				{
+					display.setText("");
+					try 
+					{	
+					
+						runProcess("g++ " + selectedItem + " -o " + selectedItem.substring(0, selectedItem.length() - 3));
+						runProcess("./" + selectedItem.substring(0, selectedItem.length() - 3));
+					} 
+					catch (Exception e1) 
+					{
+						e1.printStackTrace();
+					}
+				}
+		    	
+		    	else if(selectedItem.endsWith(".cpp"))
+				{
+					display.setText("");
+					try 
+					{	
+					
+						runProcess("g++ " + selectedItem + " -o " + selectedItem.substring(0, selectedItem.length() - 4));
+						runProcess("./" + selectedItem.substring(0, selectedItem.length() - 4));
+					} 
+					catch (Exception e1) 
+					{
+						e1.printStackTrace();
+					}
+				}
+		    }
+		};
+		list.addMouseListener(mouseListener);
+		
+		
+		
+			/*p.add(b, BorderLayout.EAST);
 			b.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e) 
@@ -127,12 +135,12 @@ public class test extends JFrame
 						catch (Exception e1) 
 						{
 							e1.printStackTrace();
-						}
+						}*/
 						/*File f = new File(file_names[i1]);
 						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 5) + ".class");
 						f.delete();
 						f1.delete();*/
-					}
+					/*}
 					
 					else if(file_names[i1].endsWith(".cc"))
 					{
@@ -147,12 +155,12 @@ public class test extends JFrame
 						catch (Exception e1) 
 						{
 							e1.printStackTrace();
-						}
+						}*/
 						/*File f = new File(file_names[i1]);
 						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 3));
 						f.delete();
 						f1.delete();*/
-					}
+					/*}
 					
 					else if(file_names[i1].endsWith(".cpp"))
 					{
@@ -167,19 +175,19 @@ public class test extends JFrame
 						catch (Exception e1) 
 						{
 							e1.printStackTrace();
-						}
+						}*/
 						/*File f = new File(file_names[i1]);
 						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 4));
 						f.delete();
 						f1.delete();*/
-					}
+					//}
 					
-				}
+				//}
 				
 				
-			});
-		}
-		p.add(display, BorderLayout.CENTER);
+			//});
+		//}
+		p.add(display, BorderLayout.WEST);
 		JButton exit = new JButton("Exit");
 		p.add(exit, BorderLayout.SOUTH);
 		exit.addActionListener(new ActionListener()
@@ -216,10 +224,10 @@ public class test extends JFrame
 		});
 		
 		
-		setSize(800,500);
+		setSize(1000,500);
 		display.setPreferredSize(new Dimension(800, 500));
 		//display.setText("test \n hello");
-		c.add(BorderLayout.CENTER, p);
+		c.add(p, BorderLayout.CENTER);
 		setVisible(true);
 		
 		/*for(int i = 0; i < file_names.length; i++)
