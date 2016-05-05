@@ -29,7 +29,8 @@ public class test extends JFrame
 	public static void File_Copy()
 	{
 		File source = new File("/home/rohit/List_Files/Testing_directory");
-		File dest = new File("/home/rohit/java_proj");
+		//File dest = new File("/home/rohit/javaproj_full");
+		File dest = new File("./");
 	
 		try 
 		{
@@ -226,6 +227,7 @@ public class test extends JFrame
 		
 		setSize(1000,500);
 		display.setPreferredSize(new Dimension(800, 500));
+		p.setBorder(BorderFactory.createTitledBorder("Output"));
 		//display.setText("test \n hello");
 		c.add(p, BorderLayout.CENTER);
 		setVisible(true);
