@@ -172,11 +172,12 @@ public class test extends JFrame
 		setSize(1920,1080);
 		
 		c.add(pane, BorderLayout.WEST);
-		p.add(display, BorderLayout.WEST);
+		JScrollPane pane1 = new JScrollPane(display);
+		p.add(pane1, BorderLayout.WEST);
 		p.add(exit, BorderLayout.EAST);
 		pane.setPreferredSize(new Dimension(300, 1000));
-		display.setPreferredSize(new Dimension(1400, 1080));
-		display.setFont(new Font("Arial", Font.BOLD, 15));
+		pane1.setPreferredSize(new Dimension(1400, 1080));
+		pane1.setFont(new Font("Arial", Font.BOLD, 15));
 		exit.setPreferredSize(new Dimension(100, 100));
 		p.setBorder(BorderFactory.createTitledBorder("OUTPUT"));
 		c.add(p, BorderLayout.CENTER);
