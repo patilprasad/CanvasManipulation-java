@@ -1,10 +1,13 @@
 /**
  * @author : vaibhav
  */
-//package canvas;
+package canvas2;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileReader;
+import java.util.Scanner;
+
 import javax.swing.*;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartFactory;
@@ -12,12 +15,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class Window_new extends JFrame {
-	static Container c;
-	static JPanel p, p1, p2, p3;
-	static ImageIcon pic, pic2;
-	public Window_new(String applicationTitle , String chartTitle){
-		super("Canvas by Vaibhav");
+public class Window extends JFrame {
+	public Window(String applicationTitle , String chartTitle){
+		super("Stevens Canvas");
 	setSize(1800,1000);
 	
 	JFreeChart barChart = ChartFactory.createBarChart(
@@ -33,18 +33,18 @@ public class Window_new extends JFrame {
 	    	  PlotOrientation.VERTICAL,
 	    	  true,true,false);	
 	 
-	c = getContentPane();
-	p = new JPanel();
-	p3 = new JPanel();
-	p1 = new ChartPanel( lineChart );
-	p2 = new ChartPanel( barChart );
-	c.setLayout(new GridLayout(2,2));
+	Container c = getContentPane();
+	JPanel p = new JPanel();
+	JPanel p3 = new JPanel();
+	JPanel p1 = new ChartPanel( lineChart );
+	JPanel p2 = new ChartPanel( barChart );
+	c.setLayout(new GridLayout(2,3));
 	//-----------adding logo------------------
-		pic = new ImageIcon("S.gif");
-		pic2 = new ImageIcon("Steves.jpg");
+		ImageIcon pic = new ImageIcon("src/S.gif");
+		ImageIcon pic2 = new ImageIcon("src/Steves.jpg");
 	    c.add(new JLabel(pic),BorderLayout.NORTH );
 	    c.add(new JLabel(pic2),BorderLayout.NORTH );
-	//-----------------------------------------
+	//-----------------------------------------    
 		 
 	p.setBackground(Color.BLUE);
 	p.setLayout(new GridLayout(4,3));
@@ -84,7 +84,7 @@ public class Window_new extends JFrame {
 			c.add(p2, BorderLayout.CENTER);
 		}
 	});
-
+	
 	b = new JButton("Assignments");
 	p.add(b);
 	b.addActionListener(new ActionListener() {
@@ -101,6 +101,7 @@ public class Window_new extends JFrame {
 		}
 	});
 	
+	
 	b = new JButton("Logout");
 	p.add(b);
 	b.addActionListener(new ActionListener() {
@@ -112,7 +113,7 @@ public class Window_new extends JFrame {
 		}
 	});
 	
-	for (int i=1;i<=8;i++)
+	for (int i=1;i<=7;i++)
 	{
 	b = new JButton("     ");
 	p.add(b);
@@ -122,24 +123,43 @@ public class Window_new extends JFrame {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 }
 	
+	
 	 private DefaultCategoryDataset createDataset( )
 	   {
-	      DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-	      dataset.addValue( 15 , "schools" , "1970" );
-	      dataset.addValue( 30 , "schools" , "1980" );
-	      dataset.addValue( 60 , "schools" ,  "1990" );
-	      dataset.addValue( 100 , "schools" , "2000" );
+		 DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
+		 //--------------------------------------------
+		try{
+			Scanner inFile = new Scanner(new FileReader("src/data.txt"));
+		
+			while (inFile != null)
+			{
+				//Read Name & idNumber from inputgpa file
+				String Name = inFile.nextLine(); // student name in file
+				int idNumber = inFile.nextInt(); //student ID number
+		 //------------------------------------------------
+	      
+	      dataset.addValue( idNumber , "grades" , Name );
+	     // dataset.addValue( 30 , "grades" , "1980" );
+	     // dataset.addValue( 60 , "grades" ,  "1990" );
+	      //dataset.addValue( 100 , "grades" , "2000" );
+			}
+		 
+		 
+		} catch (Exception e1) 
+		{
+			System.out.println("no file found");
+		}
 	      return dataset;
+			
 	   }
-
+	 
 	 public static void runProcess(String command) throws Exception 
 		{
 		    Process pro = Runtime.getRuntime().exec(command);
 		    pro.waitFor();
 		}
-
 public static void main(String[] a) {
-	new Window_new("Grade Vs Students" ,
+	new Window("Grade Vs Students" ,
 		      "Grades Vs Stdents");
 	}
 }
