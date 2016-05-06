@@ -1,4 +1,5 @@
 import java.io.*;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -8,189 +9,133 @@ import org.apache.commons.io.*;
 
 public class test extends JFrame
 {
-	static String[] file_names;
-	public static void filenames()
-	{
-		File folder = new File("/home/rohit/List_Files/Testing_directory");
-		File[] listOfFiles = folder.listFiles();
-		 file_names = new String[listOfFiles.length];
-		
-			for (int i = 0; i < listOfFiles.length; i++) 
-			{
-				//System.out.println("File " + listOfFiles[i].getName());
-				file_names[i] = listOfFiles[i].getName();
-				//System.out.println(file_names[i]);
-			}
-	}
-
-// copy all files from the folder containing .java files
-// to current directory, for the ease of execution
-
-	public static void File_Copy()
-	{
-		File source = new File("/home/rohit/List_Files/Testing_directory");
-		//File dest = new File("/home/rohit/javaproj_full");
-		File dest = new File("./");
-	
-		try 
-		{
-	    	FileUtils.copyDirectory(source, dest);
-		} 
-		catch (IOException e) 
-		{
-	    	e.printStackTrace();
-		}
-	}
 	static JTextArea display;
 	static JList<String> list;
 	static DefaultListModel<String> model;
-	//static JButton b;
+	static String[] file_names;
+	
 	public test()
 	{
-		super("Test");
+		super("View Assignments");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    display = new JTextArea();
-	    
+	    display = new JTextArea();    
 		JPanel p = new JPanel();
+		//GridBagConstraints c = new GridBagConstraints();
 		Container c = getContentPane();
 		model = new DefaultListModel<String>();
+		
 		for(int i = 0; i < file_names.length; i++)
 		{
 			final int i1 = i;
-			//b = new JButton(file_names[i]);
 			model.addElement(file_names[i]);
 		}
+		
 		list = new JList<String>(model);
+		list.setFont(new Font("Arial",Font.BOLD,20));
 		JScrollPane pane = new JScrollPane(list);
-		c.add(pane, BorderLayout.EAST);
+		
+		
 		MouseListener mouseListener = new MouseAdapter() 
 		{
 		    public void mouseClicked(MouseEvent e) 
 		    {
-		    	String selectedItem = (String)list.getSelectedValue();
-		    	if(selectedItem.endsWith(".java"))
-				{
-					display.setText("");
-					try 
-					{	
-					
-						runProcess("javac " + selectedItem);
-						runProcess("java " + selectedItem.substring(0, selectedItem.length() - 5));
-					} 
-					catch (Exception e1) 
-					{
-						e1.printStackTrace();
-					}
-				}
+		    	if (e.getClickCount() == 2) 
+		    	{
+		    		display.setText("");
+		    		FileReader input = null;
+		            BufferedReader br = null;
+		    		String selectedItem = (String)list.getSelectedValue();
+		    		try 
+		    		{
+
+		                input = new FileReader(selectedItem);
+		                br = new BufferedReader(input);
+		                String str;
+
+		                while ((str = br.readLine()) != null) 
+		                {
+		                    display.append(str  + "\n");
+		                }
+		            }
+
+		            catch (IOException e1) {
+		                e1.printStackTrace();
+		            }
+
+		            finally {
+
+		                try {
+		                    input.close();
+		                    br.close();
+		                }
+
+		                catch (IOException x) {
+		                    x.printStackTrace();
+		                }
+
+		            }
+
 		    	
-		    	else if(selectedItem.endsWith(".cc"))
-				{
-					display.setText("");
-					try 
-					{	
-					
-						runProcess("g++ " + selectedItem + " -o " + selectedItem.substring(0, selectedItem.length() - 3));
-						runProcess("./" + selectedItem.substring(0, selectedItem.length() - 3));
-					} 
-					catch (Exception e1) 
-					{
-						e1.printStackTrace();
-					}
-				}
+		    		
+		    	}
 		    	
-		    	else if(selectedItem.endsWith(".cpp"))
-				{
-					display.setText("");
-					try 
-					{	
+		    	else if(e.getClickCount() == 1)
+		    	{
+		    		String selectedItem = (String)list.getSelectedValue();
+		    		if(selectedItem.endsWith(".java"))
+		    		{
+		    			display.setText("");
+		    			try 
+		    			{	
 					
-						runProcess("g++ " + selectedItem + " -o " + selectedItem.substring(0, selectedItem.length() - 4));
-						runProcess("./" + selectedItem.substring(0, selectedItem.length() - 4));
-					} 
-					catch (Exception e1) 
-					{
+		    				runProcess("javac " + selectedItem);
+		    				runProcess("java " + selectedItem.substring(0, selectedItem.length() - 5));
+		    			} 
+		    			catch (Exception e1) 
+		    			{
+		    				e1.printStackTrace();
+		    			}
+		    		}
+		    	
+		    		else if(selectedItem.endsWith(".cc"))
+		    		{
+		    			display.setText("");
+		    			try 
+		    			{	
+					
+		    				runProcess("g++ " + selectedItem + " -o " + selectedItem.substring(0, selectedItem.length() - 3));
+		    				runProcess("./" + selectedItem.substring(0, selectedItem.length() - 3));
+		    			} 
+		    			catch (Exception e1) 
+		    			{
 						e1.printStackTrace();
-					}
-				}
+		    			}
+		    		}
+		    	
+		    		else if(selectedItem.endsWith(".cpp"))
+		    		{
+		    			display.setText("");
+		    			try 
+		    			{	
+					
+		    				runProcess("g++ " + selectedItem + " -o " + selectedItem.substring(0, selectedItem.length() - 4));
+		    				runProcess("./" + selectedItem.substring(0, selectedItem.length() - 4));
+		    			} 
+		    			catch (Exception e1) 
+		    			{
+		    				e1.printStackTrace();
+		    			}
+		    		}
+		    		
+		    	}
 		    }
 		};
+		
 		list.addMouseListener(mouseListener);
 		
-		
-		
-			/*p.add(b, BorderLayout.EAST);
-			b.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent e) 
-				{
-					if(file_names[i1].endsWith(".java"))
-					{
-						System.out.println("JAVA CODE OUTPUT");
-						display.setText("");
-						try 
-						{	
-						
-							runProcess("javac " + file_names[i1]);
-							runProcess("java " + file_names[i1].substring(0, file_names[i1].length() - 5));
-						} 
-						catch (Exception e1) 
-						{
-							e1.printStackTrace();
-						}*/
-						/*File f = new File(file_names[i1]);
-						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 5) + ".class");
-						f.delete();
-						f1.delete();*/
-					/*}
-					
-					else if(file_names[i1].endsWith(".cc"))
-					{
-						System.out.println(".cc CODE OUTPUT");
-						display.setText("");
-						try 
-						{	
-						
-							runProcess("g++ " + file_names[i1] + " -o " + file_names[i1].substring(0, file_names[i1].length() - 3));
-							runProcess("./" + file_names[i1].substring(0, file_names[i1].length() - 3));
-						} 
-						catch (Exception e1) 
-						{
-							e1.printStackTrace();
-						}*/
-						/*File f = new File(file_names[i1]);
-						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 3));
-						f.delete();
-						f1.delete();*/
-					/*}
-					
-					else if(file_names[i1].endsWith(".cpp"))
-					{
-						System.out.println(".cpp CODE OUTPUT");
-						display.setText("");
-						try 
-						{	
-						
-							runProcess("g++ " + file_names[i1] + " -o " + file_names[i1].substring(0, file_names[i1].length() - 4));
-							runProcess("./" + file_names[i1].substring(0, file_names[i1].length() - 4));
-						} 
-						catch (Exception e1) 
-						{
-							e1.printStackTrace();
-						}*/
-						/*File f = new File(file_names[i1]);
-						File f1 = new File(file_names[i1].substring(0, file_names[i1].length() - 4));
-						f.delete();
-						f1.delete();*/
-					//}
-					
-				//}
-				
-				
-			//});
-		//}
-		p.add(display, BorderLayout.WEST);
-		JButton exit = new JButton("Exit");
-		p.add(exit, BorderLayout.SOUTH);
+		//JButton exit = new JButton("<html>E<br>X<br>I<br>T</html>");
+		JButton exit = new JButton("EXIT");
+		exit.setFont(new Font("Arial", Font.BOLD, 20));
 		exit.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -224,69 +169,48 @@ public class test extends JFrame
 			
 		});
 		
+		setSize(1920,1080);
 		
-		setSize(1000,500);
-		display.setPreferredSize(new Dimension(800, 500));
-		p.setBorder(BorderFactory.createTitledBorder("Output"));
-		//display.setText("test \n hello");
+		c.add(pane, BorderLayout.WEST);
+		p.add(display, BorderLayout.WEST);
+		p.add(exit, BorderLayout.EAST);
+		pane.setPreferredSize(new Dimension(300, 1000));
+		display.setPreferredSize(new Dimension(1400, 1080));
+		display.setFont(new Font("Arial", Font.BOLD, 15));
+		exit.setPreferredSize(new Dimension(100, 100));
+		p.setBorder(BorderFactory.createTitledBorder("OUTPUT"));
 		c.add(p, BorderLayout.CENTER);
-		setVisible(true);
-		
-		/*for(int i = 0; i < file_names.length; i++)
-		{
-			if(file_names[i].endsWith(".java"))
-			{
-				System.out.println("JAVA CODE OUTPUT");
-			
-				try 
-				{	
-				
-					runProcess("javac " + file_names[i]);
-					runProcess("java " + file_names[i].substring(0, file_names[i].length() - 5));
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-			
-			else if(file_names[i].endsWith(".cc"))
-			{
-				System.out.println(".cc CODE OUTPUT");
-			
-				try 
-				{	
-				
-					runProcess("g++ " + file_names[i] + " -o " + file_names[i].substring(0, file_names[i].length() - 3));
-					runProcess("./" + file_names[i].substring(0, file_names[i].length() - 3));
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-			
-			else if(file_names[i].endsWith(".cpp"))
-			{
-				System.out.println(".cpp CODE OUTPUT");
-			
-				try 
-				{	
-				
-					runProcess("g++ " + file_names[i] + " -o " + file_names[i].substring(0, file_names[i].length() - 4));
-					runProcess("./" + file_names[i].substring(0, file_names[i].length() - 4));
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-			
-		}*/
-		
+		setVisible(true);	
 	}
 	
+	
+	public static void filenames()
+	{
+		File folder = new File("/home/rohit/List_Files/Testing_directory");
+		File[] listOfFiles = folder.listFiles();
+		 file_names = new String[listOfFiles.length];
 		
+			for (int i = 0; i < listOfFiles.length; i++) 
+			{
+				file_names[i] = listOfFiles[i].getName();
+			}
+	}
+
+	public static void File_Copy()
+	{
+		File source = new File("/home/rohit/List_Files/Testing_directory");
+		File dest = new File("./");
+	
+		try 
+		{
+	    	FileUtils.copyDirectory(source, dest);
+		} 
+		catch (IOException e) 
+		{
+	    	e.printStackTrace();
+		}
+	}
+			
 	public static void runProcess(String command) throws Exception 
 	{
 	    Process pro = Runtime.getRuntime().exec(command);
@@ -298,13 +222,11 @@ public class test extends JFrame
 	public static void printLines(String name, InputStream ins) throws Exception 
 	{
 	    String line = null;
-	    String op_disp = "";
-	    //display.setText("");	
+	    String op_disp = "";	
 	    BufferedReader in = new BufferedReader(
 	        new InputStreamReader(ins));
 	    while ((line = in.readLine()) != null) 
 	    {
-	        //System.out.println(name + " " + line);
 	    	op_disp = op_disp + line + "\n";
 	    }
 	    display.append(op_disp);
@@ -315,57 +237,6 @@ public class test extends JFrame
 	{
 		filenames();
 		File_Copy();
-		/*for(int i = 0; i < file_names.length; i++)
-		{
-			if(file_names[i].endsWith(".java"))
-			{
-				System.out.println("JAVA CODE OUTPUT");
-			
-				try 
-				{	
-				
-					runProcess("javac " + file_names[i]);
-					runProcess("java " + file_names[i].substring(0, file_names[i].length() - 5));
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-			
-			else if(file_names[i].endsWith(".cc"))
-			{
-				System.out.println(".cc CODE OUTPUT");
-			
-				try 
-				{	
-				
-					runProcess("g++ " + file_names[i] + " -o " + file_names[i].substring(0, file_names[i].length() - 3));
-					runProcess("./" + file_names[i].substring(0, file_names[i].length() - 3));
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-			
-			else if(file_names[i].endsWith(".cpp"))
-			{
-				System.out.println(".cpp CODE OUTPUT");
-			
-				try 
-				{	
-				
-					runProcess("g++ " + file_names[i] + " -o " + file_names[i].substring(0, file_names[i].length() - 4));
-					runProcess("./" + file_names[i].substring(0, file_names[i].length() - 4));
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-			
-		}*/
 		
 		new test();
 		
