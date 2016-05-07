@@ -19,23 +19,32 @@ public class Window2 extends JFrame {
 		super("Stevens 2");
 	setSize(1800,1000);
 	
-	JButton b = new JButton("T/TA");
+	JButton b = new JButton("Teacher/TA");
 	JButton b1 = new JButton("STUDENT");
-	JButton b2 = new JButton("Back");
+	JButton b2 = new JButton("Back to course list");
 	JButton b3 = new JButton("REFRESH");
 	JButton b4 = new JButton("Logout");
 	JButton b5 = new JButton("List COurses");
-	JButton b6 = new JButton("Back");
+	JButton b6 = new JButton("Back to main");
 	JButton b7 = new JButton("SUBMIT");
+	JButton b8 = new JButton("Login");
+	JButton b9 = new JButton("List Students");
+	JButton b10 = new JButton("List Assignments");
+	JButton b11 = new JButton("Change Date");
+	JButton b12 = new JButton("Get Grades");
+	JButton b13 = new JButton("Runtime");
+	JButton b14 = new JButton("Back to Submitting courseID");
+	
 	 
 	Container c = getContentPane();
-	c.setBackground(Color.YELLOW);
+	//c.setBackground(Color.YELLOW);
 	JPanel p = new JPanel();  // Logo screen
 	JPanel p1 = new JPanel(); // logout screen
 	JPanel p2 = new JPanel(); // T/TA, STUDENT, REFRESH ,Logout
 	JPanel p3 = new JPanel(); // list courses, back
 	JPanel p4 = new JPanel(); // List Course expanded-- list and id
 	JPanel p5 = new JPanel(); // List Course expanded-- enter id , submit, logout, back
+	JPanel p6 = new JPanel(); //ls,ls,cd,gg,runtime
 	
 
 	//-----------adding logo------------------
@@ -43,7 +52,41 @@ public class Window2 extends JFrame {
 			ImageIcon pic2 = new ImageIcon("src/Steves.jpg");
 		    p.add(new JLabel(pic),BorderLayout.NORTH );
 		    p.add(new JLabel(pic2),BorderLayout.NORTH );
-	//-----------------------------------------  
+	//----------------------------------------- 
+		    
+	//---------p6------------------
+		    p6.setLayout(new GridLayout(2,3));
+		    p6.add(b9);
+		    p6.add(b10);
+		    p6.add(b11);
+		    p6.add(b12);
+		    p6.add(b13);
+		    b13.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try 
+					{
+						runProcess("javac -cp *; test.java");
+						runProcess("java -cp *; test");
+					} 
+					catch (Exception e1) 
+					{
+						e1.printStackTrace();
+					}
+				}
+			});
+		    p6.add(b14);
+		    b14.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				c.remove(p6);
+				c.add(p4);
+				c.revalidate();
+				c.repaint();
+						}
+					});
+		    
+		    
+		    
+	//-----------------------------	    
 		   
 		    p5.setLayout(new GridLayout(3,1));
 		    
@@ -69,14 +112,23 @@ public class Window2 extends JFrame {
 				//c.remove(p4);
 			setCourseID(display.getText());
 				//System.out.print(courseID);
+			c.remove(p4);
+			c.add(p6);
+			
 						c.revalidate();
 						c.repaint();
 					}
 				});
 	 
 	 p5.add(b2);
-	 p5.add(b4);
-	
+	 b2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				c.remove(p4);
+				c.add(p3);
+				c.revalidate();
+				c.repaint();
+			}
+		});
 	 p4.add(p5);
 			
 			
@@ -109,7 +161,7 @@ public class Window2 extends JFrame {
 			p3.add(b6);
 			b6.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					c.remove(p2);
+					c.remove(p3);
 					c.add(p2);
 					c.revalidate();
 					c.repaint();
@@ -145,9 +197,23 @@ public class Window2 extends JFrame {
 	b4.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			c.removeAll();
-			c.revalidate();
-		    c.add(new JLabel(pic2),BorderLayout.CENTER );
+			
+		    c.add(new JLabel(pic2),BorderLayout.CENTER );;
+		    p1.add(b8,BorderLayout.SOUTH);
+		    b8.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					c.remove(p1);
+					c.removeAll();
+					c.add(p);
+					c.add(p2);
+					c.revalidate();
+					c.repaint();
+				}
+			});
+		    
 		    c.add(p1);
+		    c.revalidate();
+		    c.repaint();
 		}
 	});
 
@@ -155,6 +221,12 @@ public class Window2 extends JFrame {
 	setVisible(true);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 }
+	
+	public static void runProcess(String command) throws Exception 
+	{
+	    Process pro = Runtime.getRuntime().exec(command);
+	    pro.waitFor();
+	}
 	
 public static void main(String[] a) {
 	new Window2("Grade Vs Students" ,
