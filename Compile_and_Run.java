@@ -1,21 +1,23 @@
+/**
+ *Author: Rohit Kulkarni
+ *Description:
+ */
 import java.io.*;
-import net.lingala.zip4j.*;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
+/*import net.lingala.zip4j.*;
+ import net.lingala.zip4j.core.ZipFile;
+ import net.lingala.zip4j.exception.ZipException;*/
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import org.apache.commons.io.*;
 
-public class Compile_and_Run extends JFrame 
-{
+public class Compile_and_Run extends JFrame {
 	static JTextArea display;
 	static JList<String> list;
 	static DefaultListModel<String> model;
 	static String[] file_names;
 
-	public Compile_and_Run() 
-	{
+	public Compile_and_Run() {
 		super("View Assignments");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		display = new JTextArea();
@@ -23,8 +25,7 @@ public class Compile_and_Run extends JFrame
 		Container c = getContentPane();
 		model = new DefaultListModel<String>();
 
-		for (int i = 0; i < file_names.length; i++) 
-		{
+		for (int i = 0; i < file_names.length; i++) {
 			final int i1 = i;
 			model.addElement(file_names[i]);
 		}
@@ -33,45 +34,36 @@ public class Compile_and_Run extends JFrame
 		list.setFont(new Font("Arial", Font.BOLD, 20));
 		JScrollPane pane = new JScrollPane(list);
 
-		MouseListener mouseListener = new MouseAdapter() 
-		{
-			public void mouseClicked(MouseEvent e) 
-			{
-				if (e.getClickCount() == 2) 
-				{
+		MouseListener mouseListener = new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
 					display.setText("");
 					FileReader input = null;
 					BufferedReader br = null;
 					String selectedItem = (String) list.getSelectedValue();
-					try 
-					{
+					try {
 
 						input = new FileReader(selectedItem);
 						br = new BufferedReader(input);
 						String str;
 
-						while ((str = br.readLine()) != null) 
-						{
+						while ((str = br.readLine()) != null) {
 							display.append(str + "\n");
 						}
 					}
 
-					catch (IOException e1) 
-					{
+					catch (IOException e1) {
 						e1.printStackTrace();
 					}
 
-					finally 
-					{
+					finally {
 
-						try 
-						{
+						try {
 							input.close();
 							br.close();
 						}
 
-						catch (IOException x) 
-						{
+						catch (IOException x) {
 							x.printStackTrace();
 						}
 
@@ -79,31 +71,24 @@ public class Compile_and_Run extends JFrame
 
 				}
 
-				else if (e.getClickCount() == 1) 
-				{
+				else if (e.getClickCount() == 1) {
 					String selectedItem = (String) list.getSelectedValue();
-					if (selectedItem.endsWith(".java")) 
-					{
+					if (selectedItem.endsWith(".java")) {
 						display.setText("");
-						try 
-						{
+						try {
 
 							runProcess("javac " + selectedItem);
 							runProcess("java "
 									+ selectedItem.substring(0,
 											selectedItem.length() - 5));
-						} 
-						catch (Exception e1) 
-						{
+						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
 					}
 
-					else if (selectedItem.endsWith(".cc")) 
-					{
+					else if (selectedItem.endsWith(".cc")) {
 						display.setText("");
-						try 
-						{
+						try {
 
 							runProcess("g++ "
 									+ selectedItem
@@ -113,18 +98,14 @@ public class Compile_and_Run extends JFrame
 							runProcess("./"
 									+ selectedItem.substring(0,
 											selectedItem.length() - 3));
-						} 
-						catch (Exception e1) 
-						{
+						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
 					}
 
-					else if (selectedItem.endsWith(".cpp")) 
-					{
+					else if (selectedItem.endsWith(".cpp")) {
 						display.setText("");
-						try 
-						{
+						try {
 
 							runProcess("g++ "
 									+ selectedItem
@@ -134,9 +115,7 @@ public class Compile_and_Run extends JFrame
 							runProcess("./"
 									+ selectedItem.substring(0,
 											selectedItem.length() - 4));
-						} 
-						catch (Exception e1) 
-						{
+						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
 					}
@@ -149,33 +128,27 @@ public class Compile_and_Run extends JFrame
 
 		JButton exit = new JButton("EXIT");
 		exit.setFont(new Font("Arial", Font.BOLD, 20));
-		
-		exit.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				for (int i = 0; i < file_names.length; i++) 
-				{
-					if (file_names[i].endsWith(".java")) 
-					{
+
+		exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < file_names.length; i++) {
+					if (file_names[i].endsWith(".java")) {
 						File f = new File(file_names[i]);
 						File f1 = new File(file_names[i].substring(0,
 								file_names[i].length() - 5) + ".class");
 						f.delete();
 						f1.delete();
-					} 
-					
-					else if (file_names[i].endsWith(".cc")) 
-					{
+					}
+
+					else if (file_names[i].endsWith(".cc")) {
 						File f = new File(file_names[i]);
 						File f1 = new File(file_names[i].substring(0,
 								file_names[i].length() - 3));
 						f.delete();
 						f1.delete();
-					} 
-					
-					else if (file_names[i].endsWith(".cpp")) 
-					{
+					}
+
+					else if (file_names[i].endsWith(".cpp")) {
 						File f = new File(file_names[i]);
 						File f1 = new File(file_names[i].substring(0,
 								file_names[i].length() - 4));
@@ -205,35 +178,31 @@ public class Compile_and_Run extends JFrame
 		setVisible(true);
 	}
 
-	// ************************************ GET FILE NAMES *********************************************
-	
-	public static void filenames() 
-	{
+	// ************************************ GET FILE NAMES
+	// *********************************************
+
+	public static void filenames() {
 		File folder = new File("/home/rohit/List_Files/Testing_directory");
 		File[] listOfFiles = folder.listFiles();
 		file_names = new String[listOfFiles.length];
 
-		for (int i = 0; i < listOfFiles.length; i++) 
-		{
+		for (int i = 0; i < listOfFiles.length; i++) {
 			file_names[i] = listOfFiles[i].getName();
 		}
 	}
 
 	// ************************************************************************************************
 
-	// *************** COPY ASSIGNMENTS TO CURRENT DIRECTORY ******************************************
+	// *************** COPY ASSIGNMENTS TO CURRENT DIRECTORY
+	// ******************************************
 
-	public static void File_Copy() 
-	{
+	public static void File_Copy() {
 		File source = new File("/home/rohit/List_Files/Testing_directory");
 		File dest = new File("./");
 
-		try 
-		{
+		try {
 			FileUtils.copyDirectory(source, dest);
-		} 
-		catch (IOException e) 
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -249,43 +218,38 @@ public class Compile_and_Run extends JFrame
 
 	// ***********************************************************************************************
 
-	public static void printLines(String name, InputStream ins)throws Exception 
-	{
+	public static void printLines(String name, InputStream ins)
+			throws Exception {
 		String line = null;
 		String op_disp = "";
 		BufferedReader in = new BufferedReader(new InputStreamReader(ins));
-		while ((line = in.readLine()) != null) 
-		{
+		while ((line = in.readLine()) != null) {
 			op_disp = op_disp + line + "\n";
 		}
 		display.append(op_disp);
 	}
 
 	// **********************************************************************************************
-	
-	//***************************** UNZIPPING ASSIGNMENTS *******************************************
 
-	public static void unzipping() 
-	{
-		String source = "/home/rohit/unzip_this/unzip_this.zip";
-		String destination = "/home/rohit/unzipped";
+	// ***************************** UNZIPPING ASSIGNMENTS
+	// *******************************************
 
-		try 
-		{
-			ZipFile zipFile = new ZipFile(source);
-			zipFile.extractAll(destination);
-		} 
-		catch (ZipException e) 
-		{
-			e.printStackTrace();
-		}
-
-	}
+	/*
+	 * public static void unzipping() { String source =
+	 * "/home/rohit/unzip_this/submissions.zip"; String destination =
+	 * "/home/rohit/List_Files/Testing_directory";
+	 * 
+	 * try { ZipFile zipFile = new ZipFile(source);
+	 * zipFile.extractAll(destination); } catch (ZipException e) {
+	 * e.printStackTrace(); }
+	 * 
+	 * }
+	 */
 
 	// ***********************************************************************************************
 
 	public static void main(String[] args) {
-		unzipping();
+		// unzipping();
 		filenames();
 		File_Copy();
 		new Compile_and_Run();
