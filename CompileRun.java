@@ -1,29 +1,33 @@
 /**
  *Author: Rohit Kulkarni
- *Description:
+ *
+ *Description:Compile and run java/c++ assignments in any specified directory
+ *using class Runtime.
+ *
+ *File types supported: .java, .cpp, .cc 	
  */
 import java.io.*;
-/*import net.lingala.zip4j.*;
- import net.lingala.zip4j.core.ZipFile;
- import net.lingala.zip4j.exception.ZipException;*/
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import org.apache.commons.io.*;
 
-public class Compile_and_Run extends JFrame {
+public class CompileRun extends JFrame {
 	static JTextArea display;
 	static JList<String> list;
 	static DefaultListModel<String> model;
 	static String[] file_names;
 
-	public Compile_and_Run() {
+	public CompileRun() {
 		super("View Assignments");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		display = new JTextArea();
 		JPanel p = new JPanel();
 		Container c = getContentPane();
 		model = new DefaultListModel<String>();
+		/*
+		 * Adding the list of assignments to a JList with a JScrollPane
+		 */
 
 		for (int i = 0; i < file_names.length; i++) {
 			final int i1 = i;
@@ -33,6 +37,11 @@ public class Compile_and_Run extends JFrame {
 		list = new JList<String>(model);
 		list.setFont(new Font("Arial", Font.BOLD, 20));
 		JScrollPane pane = new JScrollPane(list);
+
+		/*
+		 * Adding a MouseListener to display output/source code depending on the
+		 * number of clicks.
+		 */
 
 		MouseListener mouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -126,6 +135,11 @@ public class Compile_and_Run extends JFrame {
 
 		list.addMouseListener(mouseListener);
 
+		/*
+		 * Adding an exit button to delete copied files before exiting the
+		 * window.
+		 */
+
 		JButton exit = new JButton("EXIT");
 		exit.setFont(new Font("Arial", Font.BOLD, 20));
 
@@ -178,8 +192,9 @@ public class Compile_and_Run extends JFrame {
 		setVisible(true);
 	}
 
-	// ************************************ GET FILE NAMES
-	// *********************************************
+	/*
+	 * Extracting file names from the folder containing the assignments.
+	 */
 
 	public static void filenames() {
 		File folder = new File("/home/rohit/List_Files/Testing_directory");
@@ -191,10 +206,9 @@ public class Compile_and_Run extends JFrame {
 		}
 	}
 
-	// ************************************************************************************************
-
-	// *************** COPY ASSIGNMENTS TO CURRENT DIRECTORY
-	// ******************************************
+	/*
+	 * Temporarily copy assignments to current directory
+	 */
 
 	public static void File_Copy() {
 		File source = new File("/home/rohit/List_Files/Testing_directory");
@@ -207,7 +221,9 @@ public class Compile_and_Run extends JFrame {
 		}
 	}
 
-	// ***********************************************************************************************
+	/*
+	 * Run the specified command using class Runtime
+	 */
 
 	public static void runProcess(String command) throws Exception {
 		Process pro = Runtime.getRuntime().exec(command);
@@ -216,7 +232,9 @@ public class Compile_and_Run extends JFrame {
 		pro.waitFor();
 	}
 
-	// ***********************************************************************************************
+	/*
+	 * Print output stream/error stream of the assignment compiled
+	 */
 
 	public static void printLines(String name, InputStream ins)
 			throws Exception {
@@ -229,30 +247,14 @@ public class Compile_and_Run extends JFrame {
 		display.append(op_disp);
 	}
 
-	// **********************************************************************************************
-
-	// ***************************** UNZIPPING ASSIGNMENTS
-	// *******************************************
-
 	/*
-	 * public static void unzipping() { String source =
-	 * "/home/rohit/unzip_this/submissions.zip"; String destination =
-	 * "/home/rohit/List_Files/Testing_directory";
-	 * 
-	 * try { ZipFile zipFile = new ZipFile(source);
-	 * zipFile.extractAll(destination); } catch (ZipException e) {
-	 * e.printStackTrace(); }
-	 * 
-	 * }
+	 * MAIN
 	 */
 
-	// ***********************************************************************************************
-
 	public static void main(String[] args) {
-		// unzipping();
 		filenames();
 		File_Copy();
-		new Compile_and_Run();
+		new CompileRun();
 	}
 
 }
