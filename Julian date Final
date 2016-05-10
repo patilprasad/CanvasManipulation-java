@@ -1,0 +1,139 @@
+package canvas;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class JulianDate { // real name is session06.JulianDate
+	private double jDate;
+
+	// only one variable monthNames or ALL JulianDate objects (shared)
+	private static String[] monthNames = {"Jan", "Feb", "Mar", "Apr","May", "Jun", "Jul", "Aug","Sep", "Oct", "Nov", "Dec" };
+	public JulianDate(int year, int mon, int day) {
+		this(year,mon,day,0,0,0);	
+	}
+	public JulianDate(int year, int mon, int day,int hour, int min, int sec) {
+		
+		jDate= day-32075+1461*(year+4800+(mon-14)/12)/4+367*(mon-2-(mon-14)/12*12)/12-3*((year+4900+(mon-14)/12)/100)/4 + hour/24.0 
+				+ min/(24*60.0) + sec/(24*60*60.0);
+	}
+	
+	public int getYear() {
+		int year, mon, l ,n;
+        l= (int) (jDate+68569);
+        n=4*l/146097;
+        l=l-(146097*n+3)/4;
+        year=4000*(l+1)/1461001;
+        l=l-1461*year/4+31;
+        mon=80*l/2447;
+        l=mon/11;
+        return year= 100*(n-49)+year+l;
+		
+	}
+	public int getMonth() {
+		int year, mon, l ,n;
+        l= (int) (jDate+68569);
+        n=4*l/146097;
+        l=l-(146097*n+3)/4;
+        year=4000*(l+1)/1461001;
+        l=l-1461*year/4+31;
+        mon=80*l/2447;
+        l=mon/11;
+        return mon= mon+2-12*l ;
+	}
+	
+	public int getDay() {
+		  	int year, mon, day, l ,n;
+	        l= (int) (jDate+68569);
+	        n=4*l/146097;
+	        l=l-(146097*n+3)/4;
+	        year=4000*(l+1)/1461001;
+	        l=l-1461*year/4+31;
+	        mon=80*l/2447;
+	        return day=l-2447*mon/80;
+	}
+	
+	// return 0 for Sunday, 1=monday, ... 6 = Saturday
+	public int dayOfWeek() {
+		return (int) ((jDate)%7+1);
+	}
+	
+	public JulianDate add(int b){
+		this.jDate = this.jDate + b;
+		int year, mon, day, l ,n;
+		l= (int) (jDate +68569);
+        n=4*l/146097;
+        l=l-(146097*n+3)/4;
+        year=4000*(l+1)/1461001;
+        l=l-1461*year/4+31;
+        mon=80*l/2447;
+        day=l-2447*mon/80;
+        l=mon/11;
+        year= 100*(n-49)+year+l;
+        mon= mon+2-12*l ;
+        return new JulianDate(year, mon, day);
+	}
+	
+	public JulianDate sub(int b){
+		this.jDate = this.jDate - b;
+		int year, mon, day, l ,n;
+		l= (int) (jDate +68569);
+        n=4*l/146097;
+        l=l-(146097*n+3)/4;
+        year=4000*(l+1)/1461001;
+        l=l-1461*year/4+31;
+        mon=80*l/2447;
+        day=l-2447*mon/80;
+        l=mon/11;
+        year= 100*(n-49)+year+l;
+        mon= mon+2-12*l ;
+        return new JulianDate(year,mon, day);
+	}
+	public double sub(JulianDate b){
+		double j1Date = this.jDate - b.jDate;
+		return j1Date;
+	}
+
+	public String getMonthName(int mon) {
+		return monthNames[mon];
+	}
+	
+	public String toString(){
+		String []i={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+		return getYear()+" "+ monthNames[getMonth()-1]+" "+getDay()+" "+ i[dayOfWeek()-1] ;
+	}
+
+	
+	
+	public static void main(String[] a) throws IOException {
+		//Take in as parsed file read this parsed file
+		    FileReader in = new FileReader("Parsedfile.txt");
+		    BufferedReader br = new BufferedReader(in);
+		    String line = br.readLine();
+		//Change the format of this file to format required by our class
+		    String str = line.replace('-', ',');
+		//Use regex java to perform pattern matching and extract yyyy,mm,dd
+		    
+		    Pattern p=Pattern.compile("\\d{4},\\d{2},\\d{2}");
+		//Match the regex pattern with the modified pattern in Parsed file(ie : output in parsed file is YYYY-MM-DDD we have changed this to YYYY,MM,DD and stored it in str )match regex with this str
+		    Matcher m=p.matcher(str);
+		    String str2 = "";
+		//find the matching group   
+		    while(m.find()){
+		    	 str2 = m.group();
+			    
+		    }
+		   
+				
+		JulianDate d1 = new JulianDate(Integer.parseInt(str2.substring(0, 4)), Integer.parseInt(str2.substring(5, 7)), Integer.parseInt(str2.substring(8, str2.length())));
+		System.out.println(d1);
+		JulianDate d3 = d1.add(1); // tomorrow
+		System.out.println(d3);  // 2016 Mar. 1 
+		JulianDate d5 = d1.add(1); //tomorrow noon
+		JulianDate d6 = d3.sub(2); // 2 days before d2
+		System.out.println(d6);
+		
+	}
+}
